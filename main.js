@@ -1,6 +1,8 @@
 const tipoBebidas = document.getElementById("tipoBebidas");
 const verCarrito = document.getElementById("ver-carrito");
 const divCarrito = document.getElementById("carrito");
+
+// Definimos los objetos de las bebidas
 const bebidas = [{
     id: 1,
     img: "https://beermarket.com.ar/wp-content/uploads/2020/11/Branca-1L.png",
@@ -34,7 +36,7 @@ const bebidas = [{
 
 let carrito1 = JSON.parse(localStorage.getItem("carrito")) || [];
 
-
+// Recorremos las bebidas con un forEach y generamos su contenido en el DOM
 bebidas.forEach((producto) => {
     let contenido = document.createElement("div");
     contenido.className = "tipoBebidas";
@@ -44,6 +46,7 @@ bebidas.forEach((producto) => {
 `;
     tipoBebidas.append(contenido);
 
+    //Creamos un botón para añadir el producto al carrito
     let comprar = document.createElement("button");
     comprar.innerHTML = `<button><i class="fa-solid fa-cart-plus fa-2xl" style="color: #000000;" id="btnCarrito"></i></button>`;
     contenido.appendChild(comprar)
@@ -53,13 +56,14 @@ bebidas.forEach((producto) => {
         const productoRepetido = carrito1.some((repetirProducto) => repetirProducto.id === producto.id)
 
         if (productoRepetido === true) {
+            //si el producto está repetido añadimos mas cantidad
             carrito1.map((prod) => {
                 if (prod.id === producto.id) {
                     prod.cantidad++;
                 }
             })
         } else {
-
+            //si el producto no está en el carrito, lo añadimos
             carrito1.push({
                 id: producto.id,
                 bebidas: producto.bebidas,
@@ -73,24 +77,10 @@ bebidas.forEach((producto) => {
 
 })
 
+
+// le añadimos DOM al carrito 
 const pintarCarrito = () => {
-    const cosasCarrito = document.createElement("div");
-    cosasCarrito.className = "h2Carrito";
-    cosasCarrito.innerHTML = `
-    <h2>Carrito de Compras</h2>
-    `;
-    divCarrito.appendChild(cosasCarrito);
-
-    const carritoBoton = document.createElement("button");
-    carritoBoton.className = "CarritoBoton";
-    carritoBoton.innerText = "X";
-
-    carritoBoton.addEventListener("click", () => {
-        divCarrito.innerHTML = "";
-    })
-
-    cosasCarrito.append(carritoBoton);
-
+    divCarrito.innerHTML = "";
     carrito1.forEach((producto) => {
         let contenidoCarrito = document.createElement("div");
         contenidoCarrito.className = "carritoProducto";
@@ -102,36 +92,42 @@ const pintarCarrito = () => {
         <span class="suma">+</span>
         <p class="total" >Total: $${producto.cantidad * producto.precio}</p>
         `;
-        
+
         divCarrito.append(contenidoCarrito);
 
-        let restar=contenidoCarrito.querySelector(".resta");
-        restar.addEventListener("click",()=>{
-            if(producto.cantidad!==1){
-            producto.cantidad--
-        }
+
+        // Función para restarle cantidad al producto del carrito
+        let restar = contenidoCarrito.querySelector(".resta");
+        restar.addEventListener("click", () => {
+            if (producto.cantidad !== 1) {
+                producto.cantidad--
+            }
             pintarCarrito();
             guardarLocal();
         });
-        
-        let sumar=contenidoCarrito.querySelector(".suma");
-        sumar.addEventListener("click",()=>{
+
+
+        // Función para sumarle cantidad al producto del carrito
+        let sumar = contenidoCarrito.querySelector(".suma");
+        sumar.addEventListener("click", () => {
             producto.cantidad++;
             pintarCarrito();
             guardarLocal();
         });
 
+        // Creamos un botón para eliminar el producto del carrito
         let eliminar = document.createElement("button");
         eliminar.className = "boton";
         eliminar.innerText = "❌";
         contenidoCarrito.append(eliminar);
-        
+
 
         eliminar.addEventListener("click", eliminarProducto);
         console.log(eliminarProducto);
-        
+
     });
 
+    //creamos una función que sume todos los precios de los productos que se encuentran en el carrito para así obtener el precio total
     const total = carrito1.reduce((sum, el) => sum + el.precio * el.cantidad, 0);
 
     const totalCompra = document.createElement("div");
@@ -139,14 +135,23 @@ const pintarCarrito = () => {
     totalCompra.innerHTML = `<p>total a pagar: $${total}</p>`;
     divCarrito.append(totalCompra);
 
-    if (total!=0){
-    const pagarTotal=document.createElement("button");
-    pagarTotal.className = "pagarTotal";
-    pagarTotal.innerText="Pagar Total"
+    //creamos un botón para pagar el cual solo va a aparecer si hay algun producto en el carrito, cuando pulsamos el boton de pagar, se limpia el LocalStorage
+    const pagarTotal = total !== 0 ?
+        (function () {
+            const button = document.createElement("button");
+            button.className = "pagarTotal";
+            button.innerText = "Pagar Total";
+            button.addEventListener("click", function () {
+                localStorage.clear();
+                divCarrito.innerText = "";
+                alert("¡Gracias por su compra!");
+
+            });
+
+            return button;
+        })()
+        : "";
     divCarrito.append(pagarTotal);
-}else {
-    divCarrito.append("");
-}
 
 };
 
@@ -163,8 +168,8 @@ const eliminarProducto = () => {
     guardarLocal();
 }
 
-const guardarLocal=() => {
-localStorage.setItem("carrito", JSON.stringify(carrito1));
+const guardarLocal = () => {
+    localStorage.setItem("carrito", JSON.stringify(carrito1));
 }
 
 JSON.parse(localStorage.getItem("carrito"));
