@@ -53,6 +53,16 @@ bebidas.forEach((producto) => {
 
     comprar.addEventListener("click", () => {
 
+        Toastify({
+            text: `${producto.bebidas} añadido` ,
+            duration: 1000,
+            className: "info",
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+
+
         const productoRepetido = carrito1.some((repetirProducto) => repetirProducto.id === producto.id)
 
         if (productoRepetido === true) {
@@ -101,7 +111,16 @@ const pintarCarrito = () => {
         restar.addEventListener("click", () => {
             if (producto.cantidad !== 1) {
                 producto.cantidad--
+                Toastify({
+                text: `Se sacó un ${producto.bebidas}` ,
+                duration: 1000,
+                className: "info",
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+            }).showToast();
             }
+            
             pintarCarrito();
             guardarLocal();
         });
@@ -111,6 +130,14 @@ const pintarCarrito = () => {
         let sumar = contenidoCarrito.querySelector(".suma");
         sumar.addEventListener("click", () => {
             producto.cantidad++;
+            Toastify({
+                text: `Se añadido un ${producto.bebidas} más` ,
+                duration: 1000,
+                className: "info",
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+            }).showToast();
             pintarCarrito();
             guardarLocal();
         });
@@ -122,7 +149,27 @@ const pintarCarrito = () => {
         contenidoCarrito.append(eliminar);
 
 
-        eliminar.addEventListener("click", eliminarProducto);
+        eliminar.addEventListener("click", () => {
+            Swal.fire({
+                title: '¿Estas seguro que lo deseas eliminar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Eliminado!',
+                        'El producto fue eliminado del carrito correctamente.',
+                        'success'
+
+                    )
+                    eliminarProducto()
+                }
+                ;
+            })
+        });
         console.log(eliminarProducto);
 
     });
@@ -175,3 +222,4 @@ const guardarLocal = () => {
 JSON.parse(localStorage.getItem("carrito"));
 
 pintarCarrito();
+
