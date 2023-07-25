@@ -1,0 +1,58 @@
+[
+    {
+    "id": 1,
+    "img": "../img/fernet-branca.jpg",
+    "bebidas": "Fernet",
+    "precio": 2800,
+    "cantidad": 1
+},
+{
+    "id": 2,
+    "img": "../img/aperol.png",
+    "bebidas": "Aperol",
+    "precio": 2100,
+    "cantidad": 1
+},
+{
+    "id": 3,
+    "img": "../img/Smirnoff.png",
+    "bebidas": "Smirnoff",
+    "precio": 2500,
+    "cantidad": 1
+},
+{
+    "id": 4,
+    "img": "../img/gancia.png",
+    "bebidas": "Gancia",
+    "precio": 2000,
+    "cantidad": 1
+},
+{
+    "id": 5,
+    "img": "../img/Gordons.png",
+    "bebidas": "Gordon´s",
+    "precio": 3600,
+    "cantidad": 1
+},
+{
+    "id": 6,
+    "img": "../img/Havana.png",
+    "bebidas": "Havana Club",
+    "precio": 4500,
+    "cantidad": 1
+},
+{
+    "id": 7,
+    "img": "../img/JohnnieWalkerBlue.png",
+    "bebidas": "Johnnie Walker Blue",
+    "precio": 99000,
+    "cantidad": 1
+},
+{
+    "id": 8,
+    "img": "../img/JohnnieWalkerRed.png",
+    "bebidas": "Johnnie Walker Red",
+    "precio": 8500,
+    "cantidad": 1
+}
+]
